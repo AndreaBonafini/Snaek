@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xaml.Schema;
 
 namespace Snaek_2
 {
@@ -19,172 +20,160 @@ namespace Snaek_2
 
     class Snake
     {
-        //Variables
-        Direction direction;
-      //int speed;
-        List<Rectangle> body;
+        private Point _head;
         Canvas canvas;
-        Window window;
+        StackPanel GetStackPanel stk;
+        Rectangle _headRectangle;
+        Direction direction;
+        List<Point> _body;
+        List<Rectangle> _bodyRectangle;
 
-        //Constructor
-        public Snake(Canvas c, Window w)
+        public object DialogResult { get; private set; }
+
+        public Snake(Canvas c,Window w)
         {
-            Random rdm = new Random((int)DateTime.Now.Ticks);
-            Random mdr = new Random((int)DateTime.Now.Ticks);
-            double k = rdm.Next(20, 500);
-            double l = mdr.Next(20, 500);
+            Random pointx1 = new Random();
+            Random pointy1 = new Random();
+            //pointx1.Next(3,49);
+            //pointy1.Next(3, 49);
             canvas = c;
-            window = w;
-            body = new List<Rectangle>();
-            Rectangle temp = new Rectangle();
-            temp.Fill = Brushes.Red;
-            temp.Width = 10;
-            temp.Height = 10;
-            body.Add(temp);
-            if (k > 500)
-            {
-                body.Clear();
-                temp.Fill = Brushes.Transparent;
-            }
-            if (k < 20)
-            {
-                body.Clear();
-                temp.Fill = Brushes.Transparent;
-            }
-            if (l > 500)
-            {
-                body.Clear();
-                temp.Fill = Brushes.Transparent;
-            }
-            if (l < 20)
-            {
-                body.Clear();
-                temp.Fill = Brushes.Transparent;
-            }
-
-            for (int i = 0; i < body.Count; i++)
-            {
-                canvas.Children.Add(body[i]);
-                Canvas.SetTop(body[i], l);
-                Canvas.SetLeft(body[i], k);
-            }
-
-            if(Keyboard.IsKeyDown(Key.W ))
-            {
-                direction = Direction.Up;
-            }
-
-            if (Keyboard.IsKeyDown(Key.A))
-            {
-                direction = Direction.Left;
-            }
-
-            if (Keyboard.IsKeyDown(Key.S))
-            {
-                direction = Direction.Down;
-            }
-
-            if (Keyboard.IsKeyDown(Key.D))
-            {
-                direction = Direction.Right;
-            }
+            _head = new Point(pointx1.Next(3,49), pointy1.Next(3,49));
+            _headRectangle = new Rectangle();
+            _headRectangle.Fill = Brushes.Red;
+            _headRectangle.Width = 10;
+            _headRectangle.Height = 10;
+            canvas.Children.Add(_headRectangle);
+            Canvas.SetLeft(_headRectangle, _head.X * 10);
+            Canvas.SetTop(_headRectangle, _head.Y * 10);
+            direction = Direction.Right;
+            _body = new List<Point>();
+            _bodyRectangle = new List<Rectangle>();
         }
 
         public void update()
         {
-            if (direction == Direction.Right)
+            if (Keyboard.IsKeyDown(Key.W))
             {
-                Rectangle temp = new Rectangle();
-                temp.Fill = Brushes.Red;
-                temp.Width = 10;
-                temp.Height = 10;
-                body.Add(temp);
-                canvas.Children.Add(body[body.Count - 1]);
-                double x = Canvas.GetLeft(body[body.Count - 2]);
-                Canvas.SetTop(body[body.Count - 1], Canvas.GetTop(body[body.Count - 2]));
-                Canvas.SetLeft(body[body.Count - 1], Canvas.GetLeft(body[body.Count - 2]) + 10);
-                foreach (Rectangle r in canvas.Children)
-                {
-                    //Console.WriteLine(Canvas.get)
-                }
-                Console.WriteLine(canvas.Children.Count);
-                canvas.Children.Remove(body[0]);
-                body.RemoveAt(0);
+                direction = Direction.Up;
             }
-            if (direction == Direction.Down)
-            {
-                Rectangle temp = new Rectangle();
-                temp.Fill = Brushes.Red;
-                temp.Width = 10;
-                temp.Height = 10;
-                body.Add(temp);
-                canvas.Children.Add(body[body.Count - 1]);
-                double x = Canvas.GetLeft(body[body.Count - 2]);
-                Canvas.SetTop(body[body.Count - 1], Canvas.GetTop(body[body.Count - 2]));
-                Canvas.SetLeft(body[body.Count - 1], Canvas.GetLeft(body[body.Count - 2]));
-                foreach (Rectangle r in canvas.Children)
-                {
-                    //Console.WriteLine(Canvas.get)
-                }
-                Console.WriteLine(canvas.Children.Count);
-                canvas.Children.Remove(body[0]);
-                body.RemoveAt(0);
-            }
-            if (direction == Direction.Left)
-            {
-                Settings.Speed = 30;
-                Rectangle temp = new Rectangle();
-                temp.Fill = Brushes.Red;
-                temp.Width = 10;
-                temp.Height = 10;
-                body.Add(temp);
-                canvas.Children.Add(body[body.Count - 1]);
-                double x = Canvas.GetLeft(body[body.Count - 2]);
-                Canvas.SetTop(body[body.Count - 1], Canvas.GetTop(body[body.Count - 2]));
-                Canvas.SetLeft(body[body.Count - 1], Canvas.GetLeft(body[body.Count - 2]) + 10);
-                foreach (Rectangle r in canvas.Children)
-                {
-                    //Console.WriteLine(Canvas.get)
-                }
-                Console.WriteLine(canvas.Children.Count);
-                canvas.Children.Remove(body[0]);
-                body.RemoveAt(0);
-            }
-            if (direction == Direction.Up)
-            {
-                Settings.Speed = 30;
-                Rectangle temp = new Rectangle();
-                temp.Fill = Brushes.Red;
-                temp.Width = 10;
-                temp.Height = 10;
-                body.Add(temp);
-                canvas.Children.Add(body[body.Count - 1]);
-                double x = Canvas.GetLeft(body[body.Count - 2]);
-                Canvas.SetTop(body[body.Count - 1], Canvas.GetTop(body[body.Count - 2]));
-                Canvas.SetLeft(body[body.Count - 1], Canvas.GetLeft(body[body.Count - 2]) + 10);
-                foreach (Rectangle r in canvas.Children)
-                {
-                    //Console.WriteLine(Canvas.get)
-                }
-                Console.WriteLine(canvas.Children.Count);
-                canvas.Children.Remove(body[0]);
-                body.RemoveAt(0);
-            }
-        }
 
-        internal void grow()
-        {
-            if (direction == Direction.Right)
+            else if (Keyboard.IsKeyDown(Key.A))
             {
-                Rectangle temp = new Rectangle();
-                temp.Fill = Brushes.Red;
-                temp.Width = 10;
-                temp.Height = 10;
-                body.Add(temp);
-                canvas.Children.Add(body[body.Count - 1]);
-                Canvas.SetTop(body[body.Count - 1], Canvas.GetTop(body[body.Count - 2]));
-                Canvas.SetLeft(body[body.Count - 1], Canvas.GetLeft(body[body.Count - 2]) + 10);
+                direction = Direction.Left;
+            }
+
+            else if (Keyboard.IsKeyDown(Key.S))
+            {
+                direction = Direction.Down;
+            }
+
+            else if (Keyboard.IsKeyDown(Key.D))
+            {
+                direction = Direction.Right;
+            }
+            else if (Keyboard.IsKeyDown(Key.Space))
+            {
+                if (_body.Count == 0)
+                {
+                    _body.Add(_head);
+                }
+                else
+                {
+                    _body.Add(_body[_body.Count - 1]);
+                }
+
+                _bodyRectangle.Add(new Rectangle());
+                _bodyRectangle[_bodyRectangle.Count - 1].Fill = Brushes.Blue;
+                _bodyRectangle[_bodyRectangle.Count - 1].Width = 10;
+                _bodyRectangle[_bodyRectangle.Count - 1].Height = 10;
+                canvas.Children.Add(_bodyRectangle[_bodyRectangle.Count - 1]);
+                Canvas.SetTop(_bodyRectangle[_bodyRectangle.Count - 1], _body[_body.Count - 1].X * 10);
+                Canvas.SetLeft(_bodyRectangle[_bodyRectangle.Count - 1], _body[_body.Count - 1].Y * 10);
+            }
+            else if (Keyboard.IsKeyDown(Key.Escape))
+            {
+                stackpanel.Children.Add("stkPause");
+            }
+            switch (direction)
+            {
+                case Direction.Right:
+                    _head = new Point(_head.X + 1, _head.Y);
+                    break;
+                case Direction.Down:
+                    _head = new Point(_head.X, _head.Y + 1);
+                    break;
+                case Direction.Left:
+                    _head = new Point(_head.X - 1, _head.Y);
+                    break;
+                case Direction.Up:
+                    _head = new Point(_head.X, _head.Y - 1);
+                    break;
+                case Direction.None:
+                    Random pointx1 = new Random();
+                    Random pointy1 = new Random();
+                    _head = new Point(25,25);
+                    break;
+            }
+            Canvas.SetLeft(_headRectangle, _head.X * 10);
+            Canvas.SetTop(_headRectangle, _head.Y * 10);
+            for (int i = 0; i < _bodyRectangle.Count; i++)
+            {
+                Canvas.SetLeft(_bodyRectangle[i], _body[i].X * 10);
+                Canvas.SetTop(_bodyRectangle[i], _body[i].Y * 10);
+            }
+
+            for (int i = _bodyRectangle.Count - 1; i > 0; i--)
+            {
+                _body[i] = _body[i - 1];    
+            }
+            if (_body.Count > 0)
+            {
+                _body[0] = _head;
+            }
+
+            if (_head.X * 10 > 500 || _head.X * 10 < 20)
+            {
+                //MessageBox.Show("U lose");
+                //canvas.Visibility = Visibility.Collapsed;
+                var result = MessageBox.Show("You Lost", "Do you want to play again?", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                direction = Direction.None;
+                }          
+                else
+                {
+                    System.Windows.Application.Current.Shutdown();
+                }
+                
+            }
+            if (_head.Y * 10 > 500 || _head.Y * 10 < 20)
+            {
+                //MessageBox.Show("U lose");
+                //canvas.Visibility = Visibility.Collapsed;
+                direction = Direction.None;
+            }
+        }       
+
+        public void Collision()
+        {
+            Random rdmFood = new Random();
+            Rectangle food = new Rectangle();
+            int foodX = rdmFood.Next(3, 49) * 10;
+            int foodY = rdmFood.Next(3, 49) * 10;
+            food.Width = 10;
+            food.Height = 10;
+            food.Fill = Brushes.Gold;
+            canvas.Children.Add(food);
+            Canvas.SetLeft(food,foodX);
+            Canvas.SetTop(food, foodY);
+            
+            if (foodX == _head.X*10 )
+            {
+                if (foodY == _head.Y * 10)
+                {
+                    canvas.Children.Remove(food); 
+                }
             }
         }
     }
-}
+} 

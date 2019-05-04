@@ -30,40 +30,27 @@ namespace Snaek_2
             snake = new Snake(canvas, this);
             //start Timer
             gameTimer.Tick += GameTimer_Tick;
-            gameTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);//fps
+            gameTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);//fps
             gameTimer.Start();
-            // gameTimer.Stop();      
-            snake.Collision();      
+
+           // gameTimer.Stop();
+
+            
         }
 
         private void GameTimer_Tick(object sender, EventArgs e)
         {
-            snake.update();
-            /*counter++;
-            if (counter % 10 == 0)
+            counter++;
+            if (counter % 3 == 0)
             {
-                
+                snake.grow();
                 counter = 0;
             }
             else
             {
                 snake.update();
-            }*/
+            }            
         }
 
-        private void BtnRestart_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtnSettings_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtnResume_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

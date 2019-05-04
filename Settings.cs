@@ -12,6 +12,7 @@ namespace Snaek_2
         Down,
         Left,
         Right,
+        None,
     };
     class Settings
     {

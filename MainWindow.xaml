@@ -5,8 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Snaek_2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Canvas x:Name="canvas">
-       
+        Title="MainWindow" Height="600" Width="800">
+    <Canvas>
+        <Rectangle Width="480" Height="480" Canvas.Top="20" Canvas.Left="20" Fill="Black"></Rectangle>
+        <Canvas x:Name="canvas">
+        </Canvas>
+        <StackPanel x:Name="stkPause" Height="130" Width="185" Canvas.Top="220" Canvas.Left="165" Visibility="Hidden">
+            <Button x:Name="btnRestart" Click="BtnRestart_Click" Content="Restart" FontSize="25"></Button>
+            <Button x:Name="btnSettings" Click="BtnSettings_Click" Content="Setting" FontSize="25"></Button>
+            <Button x:Name="btnResume" Content="Resume" Click="BtnResume_Click" FontSize="25" ></Button>
+        </StackPanel>
     </Canvas>
 </Window>
