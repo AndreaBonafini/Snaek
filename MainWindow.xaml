@@ -10,10 +10,11 @@
         <Rectangle Width="480" Height="480" Canvas.Top="20" Canvas.Left="20" Fill="Black"></Rectangle>
         <Canvas x:Name="canvas">
         </Canvas>
-        <StackPanel x:Name="stkPause" Height="130" Width="185" Canvas.Top="220" Canvas.Left="165" Visibility="Hidden">
-            <Button x:Name="btnRestart" Click="BtnRestart_Click" Content="Restart" FontSize="25"></Button>
-            <Button x:Name="btnSettings" Click="BtnSettings_Click" Content="Setting" FontSize="25"></Button>
-            <Button x:Name="btnResume" Content="Resume" Click="BtnResume_Click" FontSize="25" ></Button>
+        <StackPanel x:Name="stkPause" Height="200" Width="185" Canvas.Top="220" Canvas.Left="550">
+            <Button x:Name="btnRestart" Click="BtnRestart_Click" Content="Restart" FontSize="25" Visibility="Hidden"></Button>
+            <Button x:Name="btnSettings" Click="BtnSettings_Click" Content="Setting" FontSize="25" Visibility="Hidden"></Button>
+            <Button x:Name="btnResume" Content="Resume" Click="BtnResume_Click" FontSize="25" Visibility="Hidden"></Button>
+            <Button x:Name="btnExit" Click="BtnExit_Click" Content="Exit" FontSize="25" Visibility="Hidden"></Button>
         </StackPanel>
     </Canvas>
 </Window>

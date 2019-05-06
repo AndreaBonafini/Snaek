@@ -23,7 +23,6 @@ namespace Snaek_2
         public static int Points { get; set; }
         public static bool GameOver { get; set; }
         public static Direction direction { get; set; }
-
         public Settings()
         {
             Width = 16;

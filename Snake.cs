@@ -16,28 +16,23 @@ using System.Xaml.Schema;
 
 namespace Snaek_2
 {
-    //enum Direction { up, right, down, left }
-
     class Snake
     {
         private Point _head;
         Canvas canvas;
-        StackPanel GetStackPanel stk;
+        //StackPanel GetStackPanel stk;
         Rectangle _headRectangle;
         Direction direction;
         List<Point> _body;
         List<Rectangle> _bodyRectangle;
-
-        public object DialogResult { get; private set; }
-
-        public Snake(Canvas c,Window w)
+        public Snake(Canvas c, Window w)
         {
             Random pointx1 = new Random();
             Random pointy1 = new Random();
             //pointx1.Next(3,49);
             //pointy1.Next(3, 49);
             canvas = c;
-            _head = new Point(pointx1.Next(3,49), pointy1.Next(3,49));
+            _head = new Point(pointx1.Next(3, 49), pointy1.Next(3, 49));
             _headRectangle = new Rectangle();
             _headRectangle.Fill = Brushes.Red;
             _headRectangle.Width = 10;
@@ -49,24 +44,20 @@ namespace Snaek_2
             _body = new List<Point>();
             _bodyRectangle = new List<Rectangle>();
         }
-
         public void update()
         {
             if (Keyboard.IsKeyDown(Key.W))
             {
                 direction = Direction.Up;
             }
-
             else if (Keyboard.IsKeyDown(Key.A))
             {
                 direction = Direction.Left;
             }
-
             else if (Keyboard.IsKeyDown(Key.S))
             {
                 direction = Direction.Down;
             }
-
             else if (Keyboard.IsKeyDown(Key.D))
             {
                 direction = Direction.Right;
@@ -81,7 +72,6 @@ namespace Snaek_2
                 {
                     _body.Add(_body[_body.Count - 1]);
                 }
-
                 _bodyRectangle.Add(new Rectangle());
                 _bodyRectangle[_bodyRectangle.Count - 1].Fill = Brushes.Blue;
                 _bodyRectangle[_bodyRectangle.Count - 1].Width = 10;
@@ -92,7 +82,6 @@ namespace Snaek_2
             }
             else if (Keyboard.IsKeyDown(Key.Escape))
             {
-                stackpanel.Children.Add("stkPause");
             }
             switch (direction)
             {
@@ -111,7 +100,7 @@ namespace Snaek_2
                 case Direction.None:
                     Random pointx1 = new Random();
                     Random pointy1 = new Random();
-                    _head = new Point(25,25);
+                    _head = new Point(25, 25);
                     break;
             }
             Canvas.SetLeft(_headRectangle, _head.X * 10);
@@ -120,60 +109,101 @@ namespace Snaek_2
             {
                 Canvas.SetLeft(_bodyRectangle[i], _body[i].X * 10);
                 Canvas.SetTop(_bodyRectangle[i], _body[i].Y * 10);
+                if (_body[i].X * 10 == _head.X * 10 && _body[i].Y * 10 == _head.Y * 10)
+                {
+                    var result1 = MessageBox.Show("Do you want to play again?", "You Lost", MessageBoxButton.YesNo);
+                    if (result1 == MessageBoxResult.Yes)
+                    {
+                        direction = Direction.None;
+                        for (int j = _bodyRectangle.Count - 1; j > 0; j--)
+                        {
+                            _bodyRectangle[_bodyRectangle.Count - j].Fill = Brushes.Black;
+                        }
+                        _bodyRectangle.Clear();
+                    }
+                    else
+                    {
+                        System.Windows.Application.Current.Shutdown();
+                    }
+                }
             }
-
             for (int i = _bodyRectangle.Count - 1; i > 0; i--)
             {
-                _body[i] = _body[i - 1];    
+                _body[i] = _body[i - 1];
             }
             if (_body.Count > 0)
             {
                 _body[0] = _head;
             }
-
             if (_head.X * 10 > 500 || _head.X * 10 < 20)
             {
                 //MessageBox.Show("U lose");
                 //canvas.Visibility = Visibility.Collapsed;
-                var result = MessageBox.Show("You Lost", "Do you want to play again?", MessageBoxButton.YesNo);
+                var result = MessageBox.Show("Do you want to play again?", "You Lost", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
-                direction = Direction.None;
-                }          
+                    for (int i = _bodyRectangle.Count - 1; i > 0; i--)
+                    {
+                        _bodyRectangle[_bodyRectangle.Count - i].Fill = Brushes.Black;
+                    }
+                    _bodyRectangle.Clear();
+                    direction = Direction.None;
+                }
                 else
                 {
                     System.Windows.Application.Current.Shutdown();
                 }
-                
             }
             if (_head.Y * 10 > 500 || _head.Y * 10 < 20)
             {
-                //MessageBox.Show("U lose");
-                //canvas.Visibility = Visibility.Collapsed;
+                for (int i = _bodyRectangle.Count - 1; i > 0; i--)
+                {
+                    _bodyRectangle[_bodyRectangle.Count - i].Fill = Brushes.Black;
+                }
+                _bodyRectangle.Clear();
                 direction = Direction.None;
             }
-        }       
+        }
 
-        public void Collision()
+        public void Food()
         {
             Random rdmFood = new Random();
             Rectangle food = new Rectangle();
-            int foodX = rdmFood.Next(3, 49) * 10;
-            int foodY = rdmFood.Next(3, 49) * 10;
+            int foodX = rdmFood.Next(7, 42);
+            int foodY = rdmFood.Next(7, 42);
             food.Width = 10;
             food.Height = 10;
             food.Fill = Brushes.Gold;
             canvas.Children.Add(food);
-            Canvas.SetLeft(food,foodX);
-            Canvas.SetTop(food, foodY);
-            
-            if (foodX == _head.X*10 )
-            {
-                if (foodY == _head.Y * 10)
-                {
-                    canvas.Children.Remove(food); 
-                }
-            }
+            Canvas.SetLeft(food, foodX * 10);
+            Canvas.SetTop(food, foodY * 10);
         }
+        public void Satellites()
+        {
+            Random rdmSatellite = new Random();
+            Random rdmSatellite2 = new Random();
+            Rectangle satellite = new Rectangle();
+            int satelliteX = rdmSatellite.Next(3, 49) * 10;
+            int satelliteY = rdmSatellite2.Next(3, 49) * 10;
+            satellite.Width = 40;
+            satellite.Height = 20;
+            satellite.Fill = Brushes.White;
+            canvas.Children.Add(satellite);
+            Canvas.SetLeft(satellite, satelliteX);
+            Canvas.SetTop(satellite, satelliteY);
+
+            Random rdmSatellite3 = new Random();
+            Random rdmSatellite4 = new Random();
+            Rectangle satellite1 = new Rectangle();
+            int satellite1X = rdmSatellite3.Next(3, 49) * 10;
+            int satellite1Y = rdmSatellite4.Next(3, 49) * 10;
+            satellite1.Width = 20;
+            satellite1.Height = 60;
+            satellite1.Fill = Brushes.White;
+            canvas.Children.Add(satellite1);
+            Canvas.SetLeft(satellite1, satellite1X);
+            Canvas.SetTop(satellite1, satellite1Y - 20);
+        }
+
     }
-} 
+}
